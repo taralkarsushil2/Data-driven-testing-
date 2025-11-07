@@ -1,0 +1,21 @@
+import csv
+import pytest
+
+def login(username, password):
+    if username == "admin" and password == "1234":
+        return "Login Successful"
+    else:
+        return "Login Failed"
+
+def read_csv_data():
+    data = []
+    with open("test_data.csv", newline='') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            data.append((row['username'], row['password'], row['expected']))
+    return data
+
+@pytest.mark.parametrize("username,password,expected", read_csv_data())
+def test_login(username, password, expected):
+    result = login(username, password)
+    assert result == expected
